@@ -1,0 +1,37 @@
+        /* General Reset */
+
+        .container {
+            max-width: 400px;
+            text-align: center;
+            background-color: #29293d; /* Fondo más claro para contraste */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin: 50px auto; /* Centra horizontal y agrega espacio superior */
+        }
+
+        h3 {
+            color: #ff6f61; /* Color para destacar títulos */
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #444;
+            margin: 10px 0;
+        }
+
+        .carta p {
+            margin: 10px 0;
+        }
+
+        .carta a {
+            text-decoration: none;
+            color: #4fc3f7; /* Color azul para enlaces */
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .carta a:hover {
+            color: #81d4fa; /* Color más claro al pasar el cursor */
+        }

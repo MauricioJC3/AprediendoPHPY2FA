@@ -1,0 +1,102 @@
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #27293d);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Estilos del navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #2d2f41;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #5d9cec;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+        .navbar .logo:hover {
+            color: #ff79c6;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        .navbar .menu li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .navbar .menu li a:hover {
+            background-color: #5d9cec;
+            color: #27293d;
+        }
+
+        /* Estilos del botón */
+        .navbar .cta {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #5d9cec, #5643fa);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .navbar .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .navbar .cta:focus {
+            outline: 2px solid #ff79c6;
+        }
+
+        /* Botón de menú para móviles */
+        .navbar .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            .navbar .menu {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            .navbar .menu.active {
+                display: flex;
+            }
+            .navbar .menu-toggle {
+                display: block;
+            }
+        }
