@@ -26,4 +26,20 @@ class User extends Database {
         return $result->fetch_assoc();
     }
 
+    // doble factor
+
+    public function createSecret($secret, $id)
+    {
+        $query = $this->db->prepare("UPDATE uses SET two_secret = ? WHERE id = ?");
+        $query->bind_param('si', $secret, $id);
+        $query->execute();
+    }
+
+    public function deleteSecret($id)
+    {
+        $query = $this->db->prepare("UPDATE uses SET two_secret = null WHERE id = ?");
+        $query->bind_param('i', $id);
+        $query->execute();
+    }
+
 }

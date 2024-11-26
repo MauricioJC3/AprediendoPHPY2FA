@@ -57,4 +57,10 @@ class UserController
             
         }
     }
+
+    public function getUser()
+    {
+        $email = $_SESSION['email'];
+        return (new User())->getUser($email);
+    } 
 }
