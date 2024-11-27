@@ -13,12 +13,14 @@
         
 
         <ul class="menu">
-
+            <!-- Si el usuario esta logueado -->
             <?php if ($UserController->isUserLoggedIn()): ?>
                 <li><a href="./panel.php"><?= $_SESSION['email'] ?></a></li>
+                <li><a href="./panel_second_factor.php">Segundo factor</a></li>
                 <li><a href="../../api/logout.php">Cerrar sesión</a></li>
             <?php else: ?>
 
+                <!-- Si el usuario no esta logueado -->
             <li><a href="./src/login.php">iniciar sesión</a></li>
             <li><a href="./src/register.php">registrarse</a></li>
             <?php endif; ?>

@@ -63,4 +63,30 @@ class UserController
         $email = $_SESSION['email'];
         return (new User())->getUser($email);
     } 
+
+    public function activateSecondFactor($secret, $code)
+    {
+        if($this->checkGoogleAuthenticatorCode($secret, $code)) {
+            $id = $_SESSION['userId'];
+            (new User())->createSecret($secret, $id);
+            return true;
+        }
+        return false;
+    }
+
+    public function checkGoogleAuthenticatorCode($secret, $code)
+    {  
+        $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
+        if ($g->checkCode($secret, $code)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function desactivateSecondFactor()
+    {
+        $id = $_SESSION['userId'];
+        (new User())->deleteSecret( $id);
+
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 
 include '../../templates/header.php';
+include '../../vendor/autoload.php';
+
 
 if (!$UserController->isUserLoggedIn()) {
     header('Location: ../login.php');
@@ -16,7 +18,7 @@ if ($user['two_secret'] == null) {
     $hasTwoFactorActive = false;
     $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
     $secret = $g->generateSecret();
-    $qrCode = \Sonata\GoogleAuthenticator\GoogleQrUrl::generate($user['name'], $secret, 'mochitoMan');
+    $qrCode = \Sonata\GoogleAuthenticator\GoogleQrUrl::generate($user['name'], $secret, 'Empresa de prueba');
 }
 
 ?>
@@ -31,9 +33,11 @@ if ($user['two_secret'] == null) {
     <link rel="stylesheet" href="../../assets/css/general.css">
 </head>
 <body>
-    <?php include '../../templates/nav.php' ?>
+<?php include '../../templates/nav.php' ?>
 
-    <div class="container">
+
+    <?php if (!$hasTwoFactorActive): ?>
+        <div class="container">
         <div class="row">
             <div class="columna6">
                 <h4>Activar Factor de auntenticacion</h4> <br>
@@ -46,13 +50,68 @@ if ($user['two_secret'] == null) {
             <div class="columna1">
                 <div class="columna2">
                     <form id="activate-second-factor">
-                        <input type="texto" placeholder="Codigo" id="codigo" required>
+                        <input type="texto" placeholder="Codigo" id="code" required>
                         <button type="submit">Activar doble factor</button>
                     </form>
+                    <div class="menerror" id="erro_mensaje"></div>
                 </div>
             </div>
 
         </div>
     </div>
+    <?php else: ?>
+        <div class="container">
+            <h5>Desactivar Factor de auntenticacion</h5><hr>
+            <button type="button" id="desactivar-segundo-factor">Desactivar</button>
+        </div>
+        <?php endif; ?>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js" integrity="sha512-v8+bPcpk4Sj7CKB11+gK/FnsbgQ15jTwZamnBf/xDmiQDcgOIYufBo6Acu1y30vrk8gg5su4x0CG3zfPaq5Fcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <?php if (!$hasTwoFactorActive): ?>
+    <script>
+    document.getElementById('activate-second-factor').onsubmit = (e) => {
+    e.preventDefault();
+
+    const errorMensaje = document.getElementById('erro_mensaje');
+    errorMensaje.classList.add('d-none');
+
+    const code = document.getElementById('code').value;
+    const secret = "<?= $secret ?>";
+
+    if (!code || !secret) {
+        alert('Los campos no coinciden');
+        return;
+    }
+
+
+    axios.post('../../api/activateSecondFcator.php', {
+        code: code,
+        secret: secret
+    })
+    .then((response) => {
+        window.location = './panel_second_factor.php';
+    })
+    .catch((error) => {
+        errorMensaje.innerText = error.response.data;
+        errorMensaje.classList.remove('d-none');
+    })
+};
+    </script>
+     <?php else: ?>
+        <script>
+            document.getElementById('desactivar-segundo-factor').onclick = (e) => {
+                e.preventDefault();
+
+                axios.post('../../api/desactivateSecondFactor.php')
+                .then((response) => {
+                    window.location = './panel_second_factor.php';
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            }
+        </script>
+        <?php endif; ?>
 </body>
 </html>
