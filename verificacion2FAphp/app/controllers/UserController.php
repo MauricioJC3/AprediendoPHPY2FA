@@ -25,10 +25,19 @@ class UserController
             return ['result' => false];
         }
 
-        // segundo factor
+        // si no tiene el segundo factor activado
+        if($user['two_secret'] !== null) 
+        {
+            $this->createSession(null, $user['email'], false);
+            return ['result'=> true, 'secondFactor' => true];
+        }
 
         $this->createSession($user['id'], $user['email']);
-        return ['result' => true];
+
+        // segundo factor
+
+       
+        return ['result' => true, 'secondFactor' => false];
         
     }
 
@@ -88,5 +97,16 @@ class UserController
         $id = $_SESSION['userId'];
         (new User())->deleteSecret( $id);
 
+    }
+
+    public function validateCode($code)
+    {
+        $user = $this->getUser();
+        
+        if ($this->checkGoogleAuthenticatorCode($user['two_secret'], $code)) {
+            $this->createSession($user['id'], $user['email']);
+            return true;
+        }
+        return false;
     }
 }

@@ -18,7 +18,13 @@ document.getElementById('login-form').onsubmit = (e) => {
         password: password
     })
     .then((response) => {
-        window.location = '../src/user/panel.php';
+        if (response.data.secondFactor) 
+        {
+            window.location = './login_seconFcator.php';
+        } else {
+            window.location = '../src/user/panel.php';
+        }
+        
     })
     .catch((error) => {
         errorMensaje.innerText = error.response.data;
